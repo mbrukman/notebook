@@ -15,24 +15,39 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"log"
 	"net/http"
 	"os"
+	"path"
 )
 
+var (
+	cwd, _  = os.Getwd()
+	webRoot = flag.String("web-root", cwd, "Root of the web file tree.")
+	host    = flag.String("host", "127.0.0.1", "By default, the server is only accessible via localhost. "+
+		"Set to 0.0.0.0 or empty string to open to all.")
+	port = flag.String("port", getEnvWithDefault("PORT", "8080"), "Port to listen on; $PORT env var overrides default value.")
+)
+
+func getEnvWithDefault(varName, defaultValue string) string {
+	if value := os.Getenv(varName); value != "" {
+		return value
+	}
+	return defaultValue
+}
+
 func indexHandler(rw http.ResponseWriter, req *http.Request) {
-	fmt.Fprintf(rw, "Hello, world!")
+	log.Printf("Access log: %s %s", req.Method, req.URL.Path)
+	http.ServeFile(rw, req, path.Join(*webRoot, req.URL.Path))
 }
 
 func main() {
+	flag.Parse()
 	http.HandleFunc("/", indexHandler)
 
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "8080"
-	}
-
-	log.Printf("Listening on port %s", port)
-	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", port), nil))
+	hostPort := fmt.Sprintf("%s:%s", *host, *port)
+	log.Printf("Listening on %s", hostPort)
+	log.Fatal(http.ListenAndServe(hostPort, nil))
 }
