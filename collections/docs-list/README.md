@@ -1,8 +1,11 @@
 # Docs list
 
-Ppen `index.html` in your browser to see the sortable/filterable docs list
-prototype with placeholder data. See below for generating your own data set for
-this list.
+Open `static/index.html` in your browser to see the sortable/filterable docs
+list prototype with placeholder data. See below for generating your own data set
+for this list.
+
+A dynamic server version of the same list is in-progress in the
+[`dynamic`](dynamic) directory.
 
 ## Using with your own data
 
@@ -44,4 +47,4 @@ Here's how to generate a custom version of `data.js` from your own files:
    var DOCS = {...paste (Ctrl-V / ⌘-V) output from the query here...};
    ```
 
-Now you can open `index.html` in your browser and interact with the list!
+Now you can open `static/index.html` in your browser and interact with the list!
