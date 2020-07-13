@@ -12,25 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-root = true
+VERB = @
+ifeq ($(VERBOSE),1)
+	VERB =
+endif
 
-[*]
-charset = utf-8
-indent_style = space
-indent_size = 2
-trim_trailing_whitespace = true
-insert_final_newline = true
+GO_SRCS := $(shell find . -type f -name '*.go')
+GO_BIN = server
 
-[BUILD,*.bzl]
-indent_style = space
-indent_size = 4
+serve: $(GO_BIN)
+	$(VERB) ./$(GO_BIN) -web-root dynamic/web
 
-[*.py]
-indent_style = space
-indent_size = 4
+build: $(GO_BIN)
 
-[*.go]
-indent_style = tab
-
-[Makefile,Makefile.*,*.mk]
-indent_style = tab
+$(GO_BIN): $(GO_SRCS)
+	$(VERB) go build ./...
