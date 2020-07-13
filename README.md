@@ -1,5 +1,10 @@
 # Notebook
 
+[![Build Status][travis-badge]][travis-url]
+
+[travis-badge]: https://travis-ci.org/mbrukman/notebook.svg?branch=master
+[travis-url]: https://travis-ci.org/mbrukman/notebook
+
 ## Overview
 
 This digital notebook is for keeping track of semi-structured data, such as
