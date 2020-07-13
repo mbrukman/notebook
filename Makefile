@@ -1,4 +1,4 @@
-# Copyright 2020 Google LLC
+# Copyright 2017 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,32 +12,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-dist: bionic
+VERB = @
+ifeq ($(VERBOSE),1)
+	VERB =
+endif
 
-language: go
+gofmt:
+	$(VERB) find . -name '*.go' | xargs -I {} gofmt -s -w {}
 
-go:
-  - "1.12.x"
-  - "1.13.x"
-  - "1.14.x"
+gofmt_test:
+	$(VERB) echo "Running 'go fmt' test ..."
+	$(VERB) ./gofmt_test.sh
 
-os:
-  - linux
-  - osx
+go_mod_tidy_test:
+	$(VERB) echo "Running 'go mod tidy' test ..."
+	$(VERB) ./go_mod_tidy_test.sh
 
-env:
-  - GO111MODULE=on
-
-branches:
-  only:
-    - master
-
-matrix:
-  allow_failures:
-    - os: osx
-
-  fast_finish: true
-
-script:
-  - go build ./...
-  - make test VERBOSE=1
+test: gofmt_test go_mod_tidy_test
