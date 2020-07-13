@@ -36,7 +36,7 @@ var (
 	host    = flag.String("host", "127.0.0.1", "By default, the server is only accessible via localhost. "+
 		"Set to 0.0.0.0 or empty string to open to all.")
 	port               = flag.String("port", getEnvWithDefault("PORT", "8080"), "Port to listen on; $PORT env var overrides default value.")
-	tofu *soyhtml.Tofu = nil
+	tofu *soyhtml.Tofu
 )
 
 func getEnvWithDefault(varName, defaultValue string) string {
