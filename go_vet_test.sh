@@ -1,4 +1,6 @@
-# Copyright 2017 Google LLC
+#!/bin/bash -u
+#
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,24 +14,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-VERB = @
-ifeq ($(VERBOSE),1)
-	VERB =
-endif
+go vet ./...
+declare -ir SUCCESS=$?
 
-gofmt:
-	$(VERB) find . -name '*.go' | xargs -I {} gofmt -s -w {}
+if [ ${SUCCESS} -eq 0 ]; then
+  echo "PASSED"
+else
+  echo "FAILED"
+  exit 1
+fi
 
-gofmt_test:
-	$(VERB) echo "Running 'go fmt' test ..."
-	$(VERB) ./gofmt_test.sh
-
-go_mod_tidy_test:
-	$(VERB) echo "Running 'go mod tidy' test ..."
-	$(VERB) ./go_mod_tidy_test.sh
-
-govet:
-	$(VERB) echo "Running 'go vet' ..."
-	$(VERB) ./go_vet_test.sh
-
-test: gofmt_test go_mod_tidy_test govet
+exit ${SUCCESS}
