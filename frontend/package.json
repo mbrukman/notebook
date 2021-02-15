@@ -1,0 +1,8 @@
+{
+  "name": "frontend",
+  "version": "0.0.0",
+  "description": "Notebook frontend",
+  "repository": "https://github.com/mbrukman/notebook",
+  "license": "Apache-2.0",
+  "private": true
+}
