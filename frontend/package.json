@@ -4,5 +4,16 @@
   "description": "Notebook frontend",
   "repository": "https://github.com/mbrukman/notebook",
   "license": "Apache-2.0",
-  "private": true
+  "private": true,
+  "scripts": {
+    "build": "preact build",
+    "dev": "preact watch"
+  },
+  "dependencies": {
+    "preact": "^10.5.12"
+  },
+  "devDependencies": {
+    "preact-cli": "^3.0.5",
+    "typescript": "^4.1.5"
+  }
 }
