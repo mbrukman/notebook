@@ -18,7 +18,40 @@ import Note from './note';
 class Notes extends Component {
   constructor() {
     super();
-    this.state = { notes: [{ title: 'Note 1', body: 'Contents', id: '12345' }] };
+    this.showAddNote = this.showAddNote.bind(this);
+    this.onChange = this.onChange.bind(this);
+    this.saveNote = this.saveNote.bind(this);
+    this.state = { adding: false, notes: [], newNote: { title: '', body: '' } };
+  }
+
+  showAddNote() {
+    this.setState({ adding: true });
+  }
+
+  onChange(e) {
+    this.setState((state) => {
+      state.newNote[e.target.name] = e.target.value;
+      return state;
+    });
+  }
+
+  saveNote(e) {
+    this.setState((state) => {
+      let addNote = {
+        title: state.newNote.title,
+        body: state.newNote.body,
+        id: Date.now(),
+      };
+      return {
+        notes: [addNote].concat(state.notes),
+        newNote: {
+          title: '',
+          body: '',
+        },
+        adding: false,
+      };
+    });
+    e.preventDefault();
   }
 
   render(props, state) {
@@ -26,12 +59,24 @@ class Notes extends Component {
         <>
           <div>Notes</div>
           {
+            !state.adding
+            ? <button onclick={this.showAddNote}>Add note</button>
+            : <form onsubmit={this.saveNote}>
+                <b>Title</b><input type="text" name="title" onchange={this.onChange} /><br/>
+                <b>Body</b><input type="textarea" name="body" onchange={this.onChange} />
+                <button onclick={this.saveNote}>Add note</button>
+              </form>
+          }
+          {
             state.notes.map((note) => (
-                <Note
-                    title={note.title}
-                    body={note.body}
-                    key={note.id}>
-                </Note>
+                <>
+                  <Note
+                      title={note.title}
+                      body={note.body}
+                      key={note.id}>
+                  </Note>
+                  <hr/>
+                </>
             ))
           }
         </>
