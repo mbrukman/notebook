@@ -82,14 +82,11 @@ class Notes extends Component {
           }
           {
             state.notes.map((note) => (
-                <>
-                  <Note
-                      title={note.title}
-                      body={note.body}
-                      key={note.id}>
-                  </Note>
-                  <hr/>
-                </>
+                <Note
+                    title={note.title}
+                    body={note.body}
+                    key={note.id}>
+                </Note>
             ))
           }
         </>

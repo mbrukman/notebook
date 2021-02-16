@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import { Component } from 'preact';
+import style from './style.css';
 
 class Note extends Component {
   constructor(props) {
@@ -21,10 +22,10 @@ class Note extends Component {
 
   render(props, state) {
     return (
-        <>
-          <div><b>{props.title}</b></div>
-          <div>{props.body}</div>
-        </>
+        <table class={style.noteTable}>
+          <tr><th class={style.noteTitle}>{props.title}</th></tr>
+          <tr><td class={style.noteBody}>{props.body}</td></tr>
+        </table>
     );
   }
 }
