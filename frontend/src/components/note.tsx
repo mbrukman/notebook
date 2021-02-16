@@ -12,11 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { FunctionalComponent } from 'preact';
-import Notes from './notes';
+import { Component } from 'preact';
 
-const App: FunctionalComponent = () => {
-  return <Notes></Notes>;
-};
+class Note extends Component {
+  constructor(props) {
+    super(props);
+  }
 
-export default App;
+  render(props, state) {
+    return (
+        <>
+          <div><b>{props.title}</b></div>
+          <div>{props.body}</div>
+        </>
+    );
+  }
+}
+
+export default Note;
