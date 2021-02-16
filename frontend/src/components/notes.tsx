@@ -15,6 +15,19 @@
 import { Component } from 'preact';
 import Note from './note';
 
+interface NotesState {
+  adding: boolean;
+  notes: Array<{
+    title: string;
+    body: string;
+    id: string;
+  }>;
+  newNote: {
+    title: string;
+    body: string;
+  }
+}
+
 class Notes extends Component {
   constructor() {
     super();
@@ -29,18 +42,18 @@ class Notes extends Component {
   }
 
   onChange(e) {
-    this.setState((state) => {
+    this.setState((state: NotesState) => {
       state.newNote[e.target.name] = e.target.value;
       return state;
     });
   }
 
   saveNote(e) {
-    this.setState((state) => {
+    this.setState((state: NotesState) => {
       let addNote = {
         title: state.newNote.title,
         body: state.newNote.body,
-        id: Date.now(),
+        id: Date.now().toString(),
       };
       return {
         notes: [addNote].concat(state.notes),
@@ -54,7 +67,7 @@ class Notes extends Component {
     e.preventDefault();
   }
 
-  render(props, state) {
+  render(props, state: NotesState) {
     return (
         <>
           <div>Notes</div>
