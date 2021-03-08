@@ -24,7 +24,11 @@ class Note extends Component {
     return (
         <table class={style.noteTable}>
           <tr><th class={style.noteTitle}>{props.title}</th></tr>
-          <tr><td class={style.noteBody}>{props.body}</td></tr>
+          <tr>
+            <td class={style.noteBody}>
+              {props.body.split('\n').map((part: string) => <div>{part}</div>)}
+            </td>
+          </tr>
         </table>
     );
   }
