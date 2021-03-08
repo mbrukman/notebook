@@ -76,7 +76,7 @@ class Notes extends Component {
             ? <button onclick={this.showAddNote}>Add note</button>
             : <form onsubmit={this.saveNote}>
                 <b>Title</b><input type="text" name="title" onchange={this.onChange} /><br/>
-                <b>Body</b><input type="textarea" name="body" onchange={this.onChange} />
+                <b>Body</b><textarea name="body" onchange={this.onChange} />
                 <button onclick={this.saveNote}>Add note</button>
               </form>
           }
