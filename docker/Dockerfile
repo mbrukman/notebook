@@ -21,10 +21,20 @@ FROM node:15.11.0-alpine3.13
 # this is set as the UID of the user inside the container.
 ARG UID
 
-# Create a non-root user and downgrade permissions.
-ENV USER=user
-RUN adduser --disabled-password --uid $UID --shell /bin/ash $USER
-USER $USER
+# Install the `usermod` tool we will need to use below.
+RUN apk --no-cache add shadow
+
+# Change the UID of the pre-existing `node` user to match that of the user
+# building this container, such that:
+#
+# (a) the user inside the container can access files owned by the user outside
+#     of the container, and
+# (b) files created by the user inside the container are owned by the user
+#     outside of the container.
+#
+# This allows seamless usage of the container, without using root permissions.
+RUN usermod -u $UID node
+USER node
 
 VOLUME /opt/notebook
 WORKDIR /opt/notebook
