@@ -19,7 +19,12 @@ endif
 
 PORT = 5000
 
-node-build:
+node-install:
+	$(VERB) yarn install
+
+node_modules: node-install
+
+node-build: node_modules
 	$(VERB) yarn run build
 
 py-serve:
