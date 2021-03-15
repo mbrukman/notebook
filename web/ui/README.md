@@ -1,6 +1,6 @@
-# Notebook frontend
+# Notebook web UI
 
-To run the frontend:
+To run the web UI:
 
 ```
 $ yarn install

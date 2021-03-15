@@ -29,7 +29,7 @@ generic_run() {
   docker run \
     -it \
     -p 8080:8080/tcp \
-    -v "$(pwd)/../frontend:/opt/notebook:rw" \
+    -v "$(pwd)/../web/ui:/opt/notebook:rw" \
     "${DOCKER_IMAGE}" \
     ${DOCKER_CMD}
 }
