@@ -5,8 +5,8 @@
 
 [github-ci-badge]: https://github.com/mbrukman/notebook/actions/workflows/main.yml/badge.svg
 [github-ci-url]: https://github.com/mbrukman/notebook/actions/workflows/main.yml
-[go-report-card-badge]: https://goreportcard.com/badge/github.com/google/code-review-bot
-[go-report-card-url]: https://goreportcard.com/report/github.com/google/code-review-bot
+[go-report-card-badge]: https://goreportcard.com/badge/github.com/mbrukman/notebook
+[go-report-card-url]: https://goreportcard.com/report/github.com/mbrukman/notebook
 
 ## Overview
 
