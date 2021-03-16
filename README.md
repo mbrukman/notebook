@@ -1,10 +1,10 @@
 # Notebook
 
-[![Build Status][travis-badge]][travis-url]
+[![Build Status][github-ci-badge]][github-ci-url]
 [![Go Report Card][go-report-card-badge]][go-report-card-url]
 
-[travis-badge]: https://travis-ci.org/mbrukman/notebook.svg?branch=master
-[travis-url]: https://travis-ci.org/mbrukman/notebook
+[github-ci-badge]: https://github.com/mbrukman/notebook/actions/workflows/main.yml/badge.svg
+[github-ci-url]: https://github.com/mbrukman/notebook/actions/workflows/main.yml
 [go-report-card-badge]: https://goreportcard.com/badge/github.com/google/code-review-bot
 [go-report-card-url]: https://goreportcard.com/report/github.com/google/code-review-bot
 
