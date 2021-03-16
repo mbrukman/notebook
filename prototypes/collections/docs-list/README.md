@@ -4,9 +4,6 @@ Open `static/index.html` in your browser to see the sortable/filterable docs
 list prototype with placeholder data. See below for generating your own data set
 for this list.
 
-A dynamic server version of the same list is in-progress in the
-[`dynamic`](dynamic) directory.
-
 ## Using with your own data
 
 Here's how to generate a custom version of `data.js` from your own files:
