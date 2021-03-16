@@ -1,4 +1,4 @@
-# Copyright 2020 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,32 +12,29 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-dist: bionic
+name: "Build & test"
 
-language: go
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
-go:
-  - "1.12.x"
-  - "1.13.x"
-  - "1.14.x"
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        go: [ '1.16', '1.15', '1.14', '1.13', '1.12' ]
+    name: Go ${{ matrix.go }}
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
 
-os:
-  - linux
-  - osx
+      - name: Setup Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: ${{ matrix.go }}
 
-env:
-  - GO111MODULE=on
-
-branches:
-  only:
-    - master
-
-matrix:
-  allow_failures:
-    - os: osx
-
-  fast_finish: true
-
-script:
-  - go build ./...
-  - make test VERBOSE=1
+      - name: Run tests
+        run: make test VERBOSE=1
