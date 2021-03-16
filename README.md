@@ -13,8 +13,14 @@
 This digital notebook is for keeping track of semi-structured data, such as
 lists and collections of URLs, for sharing and reference.
 
-This is a work-in-progress; please see [collections](collections/#readme) for
-current status of the collections work.
+This is a work-in-progress; here are some ongoing efforts:
+
+* Preact-based [web UI](web/ui/#readme) and [Go API server](web/server)
+
+  You can run the web UI [directly](web/ui/#readme), or you can use the
+  provided [Dockerfile](docker) to build and run the container locally.
+
+* [collections UI](prototypes/collections/#readme) prototype
 
 ## Contributing
 
