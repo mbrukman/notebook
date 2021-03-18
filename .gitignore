@@ -1,0 +1,8 @@
+# Temporary editor files.
+*~
+*.sw?
+
+# Node build outputs
+web/ui/build/
+web/ui/node_modules/
+web/ui/size-plugin.json
