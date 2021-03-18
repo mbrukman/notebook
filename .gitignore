@@ -2,6 +2,10 @@
 *~
 *.sw?
 
+# Go binaries
+web/proxy/proxy
+web/server/server
+
 # Node build outputs
 web/ui/build/
 web/ui/node_modules/
