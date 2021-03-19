@@ -22,6 +22,8 @@ import (
 	"os"
 	"path"
 	"strings"
+
+	"github.com/mbrukman/notebook/web/server/api"
 )
 
 var (
@@ -39,24 +41,16 @@ func getEnvWithDefault(varName, defaultValue string) string {
 	return defaultValue
 }
 
-func apiHandler(rw http.ResponseWriter, req *http.Request) {
-	log.Printf("Request [API]: %s %s", req.Method, req.URL.Path)
-	// TODO(mbrukman): for now, this is returning an empty JSON response
-	// just so that it is valid; we will need to replace it and fill in a
-	// complete response to make this API operational.
-	fmt.Fprintf(rw, "{}")
-}
-
-func staticFileHandler(rw http.ResponseWriter, req *http.Request) {
+func handleStaticFile(rw http.ResponseWriter, req *http.Request) {
 	log.Printf("Request [static]: %s %s", req.Method, req.URL.Path)
 	http.ServeFile(rw, req, path.Join(*webRoot, req.URL.Path))
 }
 
 func dispatchHandler(rw http.ResponseWriter, req *http.Request) {
 	if strings.HasPrefix(req.URL.Path, "/api/") {
-		apiHandler(rw, req)
+		api.HandleRequest(rw, req)
 	} else {
-		staticFileHandler(rw, req)
+		handleStaticFile(rw, req)
 	}
 }
 
