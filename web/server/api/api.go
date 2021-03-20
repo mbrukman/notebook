@@ -49,8 +49,25 @@ type ErrorResponse struct {
 }
 
 func listNotes(rw http.ResponseWriter, req *http.Request) {
+	notes := []Note{
+		{
+			Title: "Foo",
+			Body:  "Foo note",
+			Id:    "this-is-foo",
+		},
+		{
+			Title: "Bar",
+			Body:  "Bar note",
+			Id:    "this-is-bar",
+		},
+		{
+			Title: "Baz",
+			Body:  "Baz note",
+			Id:    "this-is-baz",
+		},
+	}
 	resp := &ListNotesResponse{
-		Notes: make([]Note, 0),
+		Notes: notes,
 	}
 	data, err := json.Marshal(resp)
 	if err != nil {
