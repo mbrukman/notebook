@@ -1,10 +1,13 @@
 # Notebook
 
 [![Build Status][github-ci-badge]][github-ci-url]
+[![Go docs][go-doc-badge]][go-doc-url]
 [![Go Report Card][go-report-card-badge]][go-report-card-url]
 
 [github-ci-badge]: https://github.com/mbrukman/notebook/actions/workflows/main.yml/badge.svg
 [github-ci-url]: https://github.com/mbrukman/notebook/actions/workflows/main.yml
+[go-doc-badge]: http://img.shields.io/badge/godoc-reference-informational.svg
+[go-doc-url]: https://pkg.go.dev/github.com/mbrukman/notebook
 [go-report-card-badge]: https://goreportcard.com/badge/github.com/mbrukman/notebook
 [go-report-card-url]: https://goreportcard.com/report/github.com/mbrukman/notebook
 
