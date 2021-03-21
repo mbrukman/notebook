@@ -28,8 +28,11 @@ go_mod_tidy_test:
 	$(VERB) echo "Running 'go mod tidy' test ..."
 	$(VERB) ./go_mod_tidy_test.sh
 
+go-test:
+	$(VERB) go test ./...
+
 govet:
 	$(VERB) echo "Running 'go vet' ..."
 	$(VERB) ./go_vet_test.sh
 
-test: gofmt_test go_mod_tidy_test govet
+test: gofmt_test go_mod_tidy_test go-test govet
