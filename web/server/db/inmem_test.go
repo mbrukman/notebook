@@ -40,7 +40,7 @@ func matchPartialNoteAndNote(t *testing.T, expected PartialNote, actual Note) {
 func matchNotes(t *testing.T, expected Note, actual Note) {
 	matchField(t, "Title", expected.Title, actual.Title)
 	matchField(t, "Body", expected.Body, actual.Body)
-	matchField(t, "Id", expected.Id, actual.Id)
+	matchField(t, "ID", expected.ID, actual.ID)
 }
 
 func expectEmpty(t *testing.T, database *InMemoryDatabase) {
@@ -73,7 +73,7 @@ func TestSequence_Add_List_Delete_List(t *testing.T) {
 	matchNotes(t, note, firstNote)
 
 	// Delete the not we added earlier.
-	deleteErr := database.DeleteNote(note.Id)
+	deleteErr := database.DeleteNote(note.ID)
 	if deleteErr != nil {
 		t.Errorf("Error deleting note: %v", deleteErr)
 		return
