@@ -14,17 +14,22 @@
 
 package db
 
+// PartialNote represents a note as may be sent by a user when creating a note,
+// e.g., missing an Id field.
 type PartialNote struct {
 	Title string
 	Body  string
 }
 
+// Note represents a complete note, e.g., as stored in the database.
 type Note struct {
 	Title string
 	Body  string
-	Id    string
+	ID    string
 }
 
+// Database represents a generic abstract storage system, with several
+// potential implementations.
 type Database interface {
 	ListNotes() []Note
 	CreateNote(note PartialNote) (Note, error)

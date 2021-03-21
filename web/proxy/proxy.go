@@ -36,15 +36,18 @@ var (
 	configFile = flag.String("config", "", "Config file, either YAML (*.yaml, *.yml) or JSON (*.json) format.")
 )
 
+// Route represents a single pair (URL path prefix, target).
 type Route struct {
 	Path   string `yaml:"path" json:"path"`
 	Target string `yaml:"target" json:"target"`
 }
 
+// ProxyConfig represents the set of routes for the reverse proxy.
 type ProxyConfig struct {
 	Routes []Route `yaml:"routes" json:"routes"`
 }
 
+// ConfigError is returned while parsing or loading an invalid config.
 type ConfigError struct {
 	Message string
 }
@@ -53,6 +56,8 @@ func (ce *ConfigError) Error() string {
 	return ce.Message
 }
 
+// ParseConfig loads the config stored in the provided file and returns a
+// config object.
 func ParseConfig(filename string) (*ProxyConfig, error) {
 	if filename == "" {
 		return nil, &ConfigError{
@@ -90,6 +95,7 @@ func ParseConfig(filename string) (*ProxyConfig, error) {
 	return config, nil
 }
 
+// Proxy represents the runtime state of the reverse proxy.
 type Proxy struct {
 	Backends map[string]*httputil.ReverseProxy
 }

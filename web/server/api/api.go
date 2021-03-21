@@ -23,27 +23,35 @@ import (
 	"time"
 )
 
+// Note represents a singular note.
 type Note struct {
 	Title string `json:"title"`
 	Body  string `json:"body"`
-	Id    string `json:"id"`
+	ID    string `json:"id"`
 }
 
+// ListNotesResponse is the response type of the ListNotes RPC.
+//
+// There is no parallel ListNotesRequest at this time as the user sends no
+// payload for this RPC.
 type ListNotesResponse struct {
 	Notes []Note `json:"notes"`
 }
 
+// CreateNoteRequest is the request type of the CreateNote RPC.
 type CreateNoteRequest struct {
 	Title string `json:"title"`
 	Body  string `json:"body"`
 }
 
+// CreateNoteResponse is the response type of the CreateNote RPC.
 type CreateNoteResponse struct {
 	Title string `json:"title"`
 	Body  string `json:"body"`
-	Id    string `json:"id"`
+	ID    string `json:"id"`
 }
 
+// ErrorResponse is a generic error response which may be used in several RPCs.
 type ErrorResponse struct {
 	Error string `json:"error"`
 }
@@ -53,17 +61,17 @@ func listNotes(rw http.ResponseWriter, req *http.Request) {
 		{
 			Title: "Foo",
 			Body:  "Foo note",
-			Id:    "this-is-foo",
+			ID:    "this-is-foo",
 		},
 		{
 			Title: "Bar",
 			Body:  "Bar note",
-			Id:    "this-is-bar",
+			ID:    "this-is-bar",
 		},
 		{
 			Title: "Baz",
 			Body:  "Baz note",
-			Id:    "this-is-baz",
+			ID:    "this-is-baz",
 		},
 	}
 	resp := &ListNotesResponse{
@@ -91,7 +99,7 @@ func createNote(rw http.ResponseWriter, req *http.Request) {
 	createResp := &CreateNoteResponse{
 		Title: createReq.Title,
 		Body:  createReq.Body,
-		Id:    fmt.Sprintf("%d", time.Now().UnixNano()/1000),
+		ID:    fmt.Sprintf("%d", time.Now().UnixNano()/1000),
 	}
 	data, err := json.Marshal(createResp)
 	if err != nil {
@@ -112,6 +120,7 @@ func handleError(rw http.ResponseWriter, req *http.Request) {
 	fmt.Fprintf(rw, "%s", data)
 }
 
+// HandleRequest dispatches the incoming request based on URL path.
 func HandleRequest(rw http.ResponseWriter, req *http.Request) {
 	log.Printf("Request [API]: %s %s", req.Method, req.URL.Path)
 	if req.URL.Path == "/api/v1/notes" {
