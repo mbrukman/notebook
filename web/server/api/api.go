@@ -87,14 +87,28 @@ func listNotes(rw http.ResponseWriter, req *http.Request) {
 func createNote(rw http.ResponseWriter, req *http.Request) {
 	body, postErr := ioutil.ReadAll(req.Body)
 	if postErr != nil {
-		log.Printf("Error reading POST body for Create: %v\n", postErr)
+		responseText := fmt.Sprintf("Error reading POST body for CreateNoteRequest: %v", postErr)
+		log.Printf("%s\n", responseText)
+		rw.WriteHeader(http.StatusBadRequest)
+		fmt.Fprintf(rw, responseText)
 		return
 	}
 	log.Printf("CreateNoteRequest (JSON): %s\n", body)
 	createReq := &CreateNoteRequest{}
 	jsonErr := json.Unmarshal(body, &createReq)
 	if jsonErr != nil {
-		log.Printf("Error parsing JSON for CreateNoteRequest: %v\n", jsonErr)
+		responseText := fmt.Sprintf("Error parsing JSON for CreateNoteRequest: %v", jsonErr)
+		log.Printf("%s\n", responseText)
+		rw.WriteHeader(http.StatusBadRequest)
+		fmt.Fprintf(rw, responseText)
+		return
+	}
+	if createReq.Title == "" && createReq.Body == "" {
+		responseText := fmt.Sprintf("Invalid CreateNoteRequest: `title` or `body` must be specified")
+		log.Printf("%s\n", responseText)
+		rw.WriteHeader(http.StatusBadRequest)
+		fmt.Fprintf(rw, responseText)
+		return
 	}
 	createResp := &CreateNoteResponse{
 		Title: createReq.Title,
@@ -103,21 +117,19 @@ func createNote(rw http.ResponseWriter, req *http.Request) {
 	}
 	data, err := json.Marshal(createResp)
 	if err != nil {
-		log.Printf("Error serializing CreateNoteResponse to JSON: %v\n", err)
+		responseText := fmt.Sprintf("Error serializing CreateNoteResponse to JSON: %v", err)
+		log.Printf("%s\n", responseText)
+		rw.WriteHeader(http.StatusInternalServerError)
+		fmt.Fprintf(rw, responseText)
+		return
 	}
 	log.Printf("CreateNoteResponse (JSON): %s\n", data)
 	fmt.Fprintf(rw, "%s", data)
 }
 
 func handleError(rw http.ResponseWriter, req *http.Request) {
-	resp := &ErrorResponse{
-		Error: fmt.Sprintf("Unrecognized API path: %s", req.URL.Path),
-	}
-	data, err := json.Marshal(resp)
-	if err != nil {
-		log.Printf("Error serializing ErrorResponse to JSON: %v\n", err)
-	}
-	fmt.Fprintf(rw, "%s", data)
+	rw.WriteHeader(http.StatusBadRequest)
+	fmt.Fprintf(rw, "Unrecognized API path: %s", req.URL.Path)
 }
 
 // HandleRequest dispatches the incoming request based on URL path.
