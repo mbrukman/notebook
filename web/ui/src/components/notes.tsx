@@ -28,57 +28,149 @@ interface NotesState {
   }
 }
 
+interface CreateNoteResponse {
+  title: string;
+  body: string;
+  id: string;
+}
+
+interface ListNotesResponse {
+  notes: Array<{
+    title: string;
+    body: string;
+    id: string;
+  }>;
+}
+
 class Notes extends Component {
   constructor() {
     super();
-    this.showAddNote = this.showAddNote.bind(this);
-    this.onChange = this.onChange.bind(this);
-    this.saveNote = this.saveNote.bind(this);
-    this.state = { adding: false, notes: [], newNote: { title: '', body: '' } };
+    this.saveNoteClientSide = this.saveNoteClientSide.bind(this);
+    this.saveNoteServerSide = this.saveNoteServerSide.bind(this);
+    this.state = {
+      adding: false,
+      notes: [],
+      newNote: {
+        title: '',
+        body: '',
+      },
+    } as NotesState;
   }
 
-  showAddNote() {
-    this.setState({ adding: true });
+  componentDidMount() {
+    fetch('/api/v1/notes')
+    .then((response: Response) => {
+      if (response.status !== 200) {
+        response.text().then((errText: string) => {
+          // TODO(mbrukman): display error in the UI as well as the console.
+          console.log('Error (' + response.status + '): ' + errText);
+        });
+        return;
+      }
+      response.json().then((listNotes: ListNotesResponse) => {
+        this.setState((s: NotesState) => ({
+          adding: false,
+          notes: listNotes.notes,
+          newNote: {
+            title: '',
+            body: '',
+          }
+        }) as NotesState);
+      });
+    })
+    .catch(console.log);
   }
 
-  onChange(e) {
-    this.setState((state: NotesState) => {
-      state.newNote[e.target.name] = e.target.value;
-      return state;
+  saveNoteServerSide(e: Event) {
+    const toAddNote = {
+      title: this.state.newNote.title,
+      body: this.state.newNote.body,
+    };
+    fetch('/api/v1/notes/create', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(toAddNote),
+    })
+    .then((response: Response) => {
+      if (response.status !== 200) {
+        response.text().then((errText: string) => {
+          // TODO(mbrukman): display error in the UI as well as the console.
+          console.log('Error (' + response.status + '): ' + errText);
+        });
+        return;
+      }
+      response.json().then((addedNote: CreateNoteResponse) => {
+        this.setState({
+          notes: [addedNote].concat(this.state.notes),
+          newNote: {
+            title: '',
+            body: '',
+          },
+          adding: false,
+        });
+      })
+    })
+    .catch(console.log);
+
+    e.preventDefault();
+    return false;
+  }
+
+  saveNoteClientSide(e: Event) {
+    const addNote = {
+      title: this.state.newNote.title,
+      body: this.state.newNote.body,
+      id: Date.now().toString(),
+    };
+    this.setState({
+      notes: [addNote].concat(this.state.notes),
+      newNote: {
+        title: '',
+        body: '',
+      },
+      adding: false,
     });
+    e.preventDefault();
+    return false;
   }
 
-  saveNote(e) {
-    this.setState((state: NotesState) => {
-      let addNote = {
-        title: state.newNote.title,
-        body: state.newNote.body,
-        id: Date.now().toString(),
-      };
-      return {
-        notes: [addNote].concat(state.notes),
+  render(props, state: NotesState) {
+    const onChange = (e: Event) => {
+      this.setState((state: NotesState) => {
+        state.newNote[e.target.name] = e.target.value;
+        return state;
+      });
+    };
+
+    const showAddNote = (e: Event) => {
+      this.setState({
+        adding: true,
         newNote: {
           title: '',
           body: '',
         },
-        adding: false,
-      };
-    });
-    e.preventDefault();
-  }
+      });
+    };
 
-  render(props, state: NotesState) {
+    const cancelSaveNote = (e: Event) => {
+      this.setState({ adding: false });
+      return false;
+    };
+
     return (
         <>
           <div>Notes</div>
           {
             !state.adding
-            ? <button onclick={this.showAddNote}>Add note</button>
-            : <form onsubmit={this.saveNote}>
-                <b>Title</b><input type="text" name="title" onchange={this.onChange} /><br/>
-                <b>Body</b><textarea name="body" onchange={this.onChange} />
-                <button onclick={this.saveNote}>Add note</button>
-              </form>
+            ? <button onclick={showAddNote}>Add note</button>
+            : <div>
+                <b>Title</b><input type="text" name="title" onchange={onChange} /><br/>
+                <b>Body</b><textarea name="body" onchange={onChange} />
+                <button onclick={this.saveNoteServerSide}>Save note</button>
+                <button onclick={cancelSaveNote}>Cancel</button>
+              </div>
           }
           {
             state.notes.map((note) => (
