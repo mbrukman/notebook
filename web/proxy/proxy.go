@@ -31,7 +31,7 @@ import (
 
 var (
 	host = flag.String("host", "127.0.0.1", "Host to listen on; 127.0.0.1 only allows connections "+
-		"from localhost; set to 0.0.0.0 or empty to allow external connetions.")
+		"from localhost; set to 0.0.0.0 or empty to allow external connections.")
 	port       = flag.Int("port", 9000, "Port to listen on")
 	configFile = flag.String("config", "", "Config file, either YAML (*.yaml, *.yml) or JSON (*.json) format.")
 )
