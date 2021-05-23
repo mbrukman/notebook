@@ -3,8 +3,10 @@
   "files.exclude": {
     "**/*.sw?": true,
     "**/*~": true,
+
     "web/proxy/proxy": true,
     "web/server/server": true,
+
     "web/ui/build": true,
     "web/ui/node_modules": true,
     "web/ui/size-plugin.json": true

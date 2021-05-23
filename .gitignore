@@ -1,6 +1,6 @@
 # Temporary editor files.
-*~
 *.sw?
+*~
 
 # Go binaries
 web/proxy/proxy
