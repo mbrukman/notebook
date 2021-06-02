@@ -52,7 +52,7 @@ func expectEmpty(t *testing.T, database *InMemoryDatabase) {
 }
 
 func TestSequence_Add_List_Delete_List(t *testing.T) {
-	database := CreateInMemoryDatabase()
+	database := NewInMemoryDatabase()
 	expectEmpty(t, database)
 
 	// Add a note to the database.
@@ -84,7 +84,7 @@ func TestSequence_Add_List_Delete_List(t *testing.T) {
 }
 
 func TestSequence_Add_List_DeleteMissing_List(t *testing.T) {
-	database := CreateInMemoryDatabase()
+	database := NewInMemoryDatabase()
 	expectEmpty(t, database)
 
 	// Add a note to the database.
@@ -120,7 +120,7 @@ func TestSequence_Add_List_DeleteMissing_List(t *testing.T) {
 }
 
 func TestDeleteFromEmptyDatabase(t *testing.T) {
-	database := CreateInMemoryDatabase()
+	database := NewInMemoryDatabase()
 	expectEmpty(t, database)
 
 	// Attempt to delete a missing note ID; expect it to fail.
