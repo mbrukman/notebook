@@ -63,7 +63,7 @@ func (inmem *InMemoryDatabase) DeleteNote(id string) error {
 	return notFoundError{message: fmt.Sprintf("Note id not found: %s", id)}
 }
 
-// CreateInMemoryDatabase returns a new instance of the in-memory database.
-func CreateInMemoryDatabase() *InMemoryDatabase {
+// NewInMemoryDatabase returns a new instance of the in-memory database.
+func NewInMemoryDatabase() *InMemoryDatabase {
 	return &InMemoryDatabase{}
 }

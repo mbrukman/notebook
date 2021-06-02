@@ -20,10 +20,9 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"path"
-	"strings"
 
 	"github.com/mbrukman/notebook/web/server/api"
+	"github.com/mbrukman/notebook/web/server/db"
 )
 
 var (
@@ -41,23 +40,11 @@ func getEnvWithDefault(varName, defaultValue string) string {
 	return defaultValue
 }
 
-func handleStaticFile(rw http.ResponseWriter, req *http.Request) {
-	log.Printf("Request [static]: %s %s", req.Method, req.URL.Path)
-	http.ServeFile(rw, req, path.Join(*webRoot, req.URL.Path))
-}
-
-func dispatchHandler(rw http.ResponseWriter, req *http.Request) {
-	if strings.HasPrefix(req.URL.Path, "/api/") {
-		api.HandleRequest(rw, req)
-	} else {
-		handleStaticFile(rw, req)
-	}
-}
-
 func main() {
 	flag.Parse()
 
-	http.HandleFunc("/", dispatchHandler)
+	apiHandler := api.NewApiHandler(*webRoot, db.NewInMemoryDatabase())
+	http.HandleFunc("/", apiHandler.DispatchHandler)
 
 	hostPort := fmt.Sprintf("%s:%s", *host, *port)
 	log.Printf("Listening on %s", hostPort)

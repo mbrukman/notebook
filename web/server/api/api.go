@@ -20,7 +20,10 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
-	"time"
+	"path"
+	"strings"
+
+	"github.com/mbrukman/notebook/web/server/db"
 )
 
 // Note represents a singular note.
@@ -56,26 +59,22 @@ type ErrorResponse struct {
 	Error string `json:"error"`
 }
 
-func listNotes(rw http.ResponseWriter, req *http.Request) {
-	notes := []Note{
-		{
-			Title: "Foo",
-			Body:  "Foo note",
-			ID:    "this-is-foo",
-		},
-		{
-			Title: "Bar",
-			Body:  "Bar note",
-			ID:    "this-is-bar",
-		},
-		{
-			Title: "Baz",
-			Body:  "Baz note",
-			ID:    "this-is-baz",
-		},
+func convertDatabaseNotesToApiNotes(notes []db.Note) []Note {
+	result := make([]Note, 0)
+	for _, note := range notes {
+		result = append(result, Note{
+			Title: note.Title,
+			Body:  note.Body,
+			ID:    note.ID,
+		})
 	}
+	return result
+}
+
+func (apiHandler *ApiHandler) listNotes(rw http.ResponseWriter, req *http.Request) {
+	notes := (*apiHandler.storage).ListNotes()
 	resp := &ListNotesResponse{
-		Notes: notes,
+		Notes: convertDatabaseNotesToApiNotes(notes),
 	}
 	data, err := json.Marshal(resp)
 	if err != nil {
@@ -84,7 +83,7 @@ func listNotes(rw http.ResponseWriter, req *http.Request) {
 	fmt.Fprintf(rw, "%s", data)
 }
 
-func createNote(rw http.ResponseWriter, req *http.Request) {
+func (apiHandler *ApiHandler) createNote(rw http.ResponseWriter, req *http.Request) {
 	body, postErr := ioutil.ReadAll(req.Body)
 	if postErr != nil {
 		responseText := fmt.Sprintf("Error reading POST body for CreateNoteRequest: %v", postErr)
@@ -110,10 +109,21 @@ func createNote(rw http.ResponseWriter, req *http.Request) {
 		fmt.Fprintf(rw, responseText)
 		return
 	}
-	createResp := &CreateNoteResponse{
+	storedNote, storeErr := (*apiHandler.storage).CreateNote(db.PartialNote{
 		Title: createReq.Title,
 		Body:  createReq.Body,
-		ID:    fmt.Sprintf("%d", time.Now().UnixNano()/1000),
+	})
+	if storeErr != nil {
+		responseText := fmt.Sprintf("Error calling CreateNoteRequest: %v", storeErr)
+		log.Printf("%s\n", responseText)
+		rw.WriteHeader(http.StatusBadRequest)
+		fmt.Fprintf(rw, responseText)
+		return
+	}
+	createResp := &CreateNoteResponse{
+		Title: storedNote.Title,
+		Body:  storedNote.Body,
+		ID:    storedNote.ID,
 	}
 	data, err := json.Marshal(createResp)
 	if err != nil {
@@ -127,19 +137,41 @@ func createNote(rw http.ResponseWriter, req *http.Request) {
 	fmt.Fprintf(rw, "%s", data)
 }
 
-func handleError(rw http.ResponseWriter, req *http.Request) {
+func (apiHandler *ApiHandler) handleError(rw http.ResponseWriter, req *http.Request) {
 	rw.WriteHeader(http.StatusBadRequest)
 	fmt.Fprintf(rw, "Unrecognized API path: %s", req.URL.Path)
 }
 
 // HandleRequest dispatches the incoming request based on URL path.
-func HandleRequest(rw http.ResponseWriter, req *http.Request) {
+func (apiHandler *ApiHandler) handleRequest(rw http.ResponseWriter, req *http.Request) {
 	log.Printf("Request [API]: %s %s", req.Method, req.URL.Path)
 	if req.URL.Path == "/api/v1/notes" {
-		listNotes(rw, req)
+		apiHandler.listNotes(rw, req)
 	} else if req.URL.Path == "/api/v1/notes/create" {
-		createNote(rw, req)
+		apiHandler.createNote(rw, req)
 	} else {
-		handleError(rw, req)
+		apiHandler.handleError(rw, req)
 	}
+}
+
+func (apiHandler *ApiHandler) handleStaticFile(rw http.ResponseWriter, req *http.Request) {
+	log.Printf("Request [static]: %s %s", req.Method, req.URL.Path)
+	http.ServeFile(rw, req, path.Join(apiHandler.webRoot, req.URL.Path))
+}
+
+func (apiHandler *ApiHandler) DispatchHandler(rw http.ResponseWriter, req *http.Request) {
+	if strings.HasPrefix(req.URL.Path, "/api/") {
+		apiHandler.handleRequest(rw, req)
+	} else {
+		apiHandler.handleStaticFile(rw, req)
+	}
+}
+
+type ApiHandler struct {
+	webRoot string
+	storage *db.Database
+}
+
+func NewApiHandler(webRoot string, storage db.Database) *ApiHandler {
+	return &ApiHandler{webRoot: webRoot, storage: &storage}
 }
