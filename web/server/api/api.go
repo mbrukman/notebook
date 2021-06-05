@@ -134,6 +134,7 @@ func (apiHandler *ApiHandler) createNote(rw http.ResponseWriter, req *http.Reque
 		return
 	}
 	log.Printf("CreateNoteResponse (JSON): %s\n", data)
+	rw.WriteHeader(http.StatusCreated)
 	fmt.Fprintf(rw, "%s", data)
 }
 

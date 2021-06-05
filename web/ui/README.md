@@ -2,12 +2,29 @@
 
 To run the web UI:
 
-```
+```sh
 $ yarn install
 $ yarn run dev
 ```
 
 and open the URL printed on the screen.
+
+Note that the web UI makes API calls to an [API server](../server), and since
+the API server will run on a different port, both the UI and API server need to
+run behind a [proxy](../proxy).
+
+You can either run the whole combination to match what it would look like in
+production, or you can run with a fake API implementation:
+
+```sh
+$ FAKE_API=1 yarn run dev
+```
+
+or:
+
+```sh
+$ make dev FAKE_API=1
+```
 
 ## Installation notes
 
@@ -28,7 +45,7 @@ One way to address this issue (while waiting for a later version of Preact CLI
 to be released) is to install a newer version of Node, which we can do via
 [Ubuntu Snap][ubuntu-snap]:
 
-```
+```sh
 $ sudo snap install node --channel=15/stable --classic
 ```
 
