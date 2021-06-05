@@ -160,6 +160,8 @@ func (apiHandler *ApiHandler) handleStaticFile(rw http.ResponseWriter, req *http
 	http.ServeFile(rw, req, path.Join(apiHandler.webRoot, req.URL.Path))
 }
 
+// DispatchHandler is a single request handler for both dynamic (API) and static
+// file requests by dispatching to other underlying handlers.
 func (apiHandler *ApiHandler) DispatchHandler(rw http.ResponseWriter, req *http.Request) {
 	if strings.HasPrefix(req.URL.Path, "/api/") {
 		apiHandler.handleRequest(rw, req)
@@ -168,11 +170,15 @@ func (apiHandler *ApiHandler) DispatchHandler(rw http.ResponseWriter, req *http.
 	}
 }
 
+// ApiHandler provides the environment for running an API server, including the
+// directory holding web resources and a database implementation.
 type ApiHandler struct {
 	webRoot string
 	storage *db.Database
 }
 
+// NewApiHandler instantiates a new API handler object from provided web
+// directory and an implementation of the database API.
 func NewApiHandler(webRoot string, storage db.Database) *ApiHandler {
 	return &ApiHandler{webRoot: webRoot, storage: &storage}
 }
