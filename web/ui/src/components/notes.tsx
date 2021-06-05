@@ -28,6 +28,11 @@ interface NotesState {
   }
 }
 
+interface CreateNoteRequest {
+  title: string;
+  body: string;
+}
+
 interface CreateNoteResponse {
   title: string;
   body: string;
@@ -60,7 +65,7 @@ class Notes extends Component {
   componentDidMount() {
     fetch('/api/v1/notes')
     .then((response: Response) => {
-      if (response.status !== 200) {
+      if (response.status !== 201 && response.status !== 200) {
         response.text().then((errText: string) => {
           // TODO(mbrukman): display error in the UI as well as the console.
           console.log('Error (' + response.status + '): ' + errText);
@@ -82,7 +87,7 @@ class Notes extends Component {
   }
 
   saveNoteServerSide(e: Event) {
-    const toAddNote = {
+    const toAddNote: CreateNoteRequest = {
       title: this.state.newNote.title,
       body: this.state.newNote.body,
     };
@@ -94,7 +99,7 @@ class Notes extends Component {
       body: JSON.stringify(toAddNote),
     })
     .then((response: Response) => {
-      if (response.status !== 200) {
+      if (response.status !== 201 && response.status !== 200) {
         response.text().then((errText: string) => {
           // TODO(mbrukman): display error in the UI as well as the console.
           console.log('Error (' + response.status + '): ' + errText);
@@ -186,4 +191,9 @@ class Notes extends Component {
   }
 }
 
-export default Notes;
+export {
+  CreateNoteRequest,
+  CreateNoteResponse,
+  ListNotesResponse,
+  Notes,
+};
