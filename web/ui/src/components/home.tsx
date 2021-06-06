@@ -13,10 +13,14 @@
 // limitations under the License.
 
 import { FunctionalComponent } from 'preact';
-import { Notes } from './notes';
 
-const App: FunctionalComponent = () => {
-  return <Notes></Notes>;
+const Home: FunctionalComponent = () => {
+  return (
+    <div>
+      <p>Welcome to your Notebook! Take a look at the different available
+      modules.</p>
+    </div>
+  );
 };
 
-export default App;
+export default Home;
