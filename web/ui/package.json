@@ -10,7 +10,8 @@
     "dev": "preact watch"
   },
   "dependencies": {
-    "preact": "^10.5.13"
+    "preact": "^10.5.13",
+    "preact-router": "^3.2.1"
   },
   "devDependencies": {
     "miragejs": "^0.1.41",
