@@ -101,15 +101,14 @@ type Proxy struct {
 }
 
 func (proxy *Proxy) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
-	log.Printf("Incoming request: %s", req.URL.Path)
 	for path, backend := range proxy.Backends {
 		if strings.HasPrefix(req.URL.Path, path) {
-			log.Printf("Redirecting %s\n", req.URL.Path)
+			log.Printf("%s %s", req.Method, req.URL.Path)
 			backend.ServeHTTP(rw, req)
 			return
 		}
 	}
-	log.Printf("Error: unhandled request (no backend mapping): %s\n", req.URL)
+	log.Printf("Error: unhandled request (no backend mapping): %s %s\n", req.Method, req.URL.Path)
 }
 
 func main() {
