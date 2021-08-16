@@ -35,4 +35,10 @@ govet:
 	$(VERB) echo "Running 'go vet' ..."
 	$(VERB) ./go_vet_test.sh
 
+go-update-workspace:
+	$(VERB) bazel run //:gazelle -- update-repos -from_file=go.mod
+
+go-update-build:
+	$(VERB) bazel run //:gazelle -- -build_file_name BUILD
+
 test: gofmt_test go_mod_tidy_test go-test govet
