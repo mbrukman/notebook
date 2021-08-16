@@ -9,6 +9,8 @@
 
     "web/ui/build": true,
     "web/ui/node_modules": true,
-    "web/ui/size-plugin.json": true
+    "web/ui/size-plugin.json": true,
+
+    "bazel-*": true
   }
 }

@@ -10,3 +10,6 @@ web/server/server
 web/ui/build/
 web/ui/node_modules/
 web/ui/size-plugin.json
+
+# Bazel outputs
+bazel-*

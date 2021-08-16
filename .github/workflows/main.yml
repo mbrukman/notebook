@@ -42,6 +42,43 @@ jobs:
       - name: Run tests
         run: make test VERBOSE=1
 
+  server-bazel:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ 'macos-10.15', 'ubuntu-20.04' ]
+        bazel: [ '4.1.0' ]
+        go: [ '1.16' ]
+    name: Bazel ${{ matrix.bazel }} and Go ${{ matrix.go }} on ${{ matrix.os }}
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Setup Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: ${{ matrix.go }}
+
+      - name: Setup cache
+        uses: actions/cache@v2
+        with:
+          path: "~/.cache/bazel"
+          key: bazel
+
+      - name: Setup Bazelisk
+        uses: bazelbuild/setup-bazelisk@v1
+        env:
+          USE_BAZEL_VERSION: ${{ matrix.bazel }}
+
+      - name: Verify Bazel installation
+        run: bazel version
+
+      - name: Build
+        run: bazel build //...
+
+      - name: Run tests
+        run: bazel test //...
+
   ui:
     runs-on: ubuntu-20.04
     strategy:
