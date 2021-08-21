@@ -39,6 +39,6 @@ go-update-workspace:
 	$(VERB) bazel run //:gazelle -- update-repos -from_file=go.mod
 
 go-update-build:
-	$(VERB) bazel run //:gazelle -- -build_file_name BUILD
+	$(VERB) bazel run //:gazelle -- -build_file_name BUILD.bazel
 
 test: gofmt_test go_mod_tidy_test go-test govet
