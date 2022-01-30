@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "preact": "^10.6.5",
-    "preact-router": "^3.2.1"
+    "preact-router": "^4.0.1"
   },
   "devDependencies": {
     "miragejs": "^0.1.41",
