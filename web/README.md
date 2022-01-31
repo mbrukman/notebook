@@ -34,25 +34,26 @@ $ ./server -port 5000
 Download and build the proxy:
 
 ```
-$ go get -u github.com/mbrukman/notebook/web/proxy
+$ cd proxy
+$ go build .
 ```
 
-Create config matching the port numbers used above:
+Use the provided [`config.yaml`](proxy/config.yaml) which will use the above
+default ports, or update `config.yaml` locally to suit your needs:
 
 ```
-$ cat > config.yaml <<EOF
+$ tail -5 config.yaml
 routes:
   - path: /api/
     target: http://localhost:5000
   - path: /
     target: http://localhost:8080
-EOF
 ```
 
-Run the proxy with the config we created:
+Run the proxy:
 
 ```
-$ proxy -config config.yml -port 9000
+$ ./proxy -config config.yaml -port 9000
 ```
 
 Now you can access http://localhost:9000 to access the combination of servers
