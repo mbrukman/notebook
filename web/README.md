@@ -29,6 +29,14 @@ $ go build .
 $ ./server -port 5000
 ```
 
+> Note: if you are seeing errors because port 5000 is in use, or you are getting
+> permission errors when accessing the server on this port, you should be aware
+> that port 5000 is used by Control Center in macOS Monterey for AirPlay.
+>
+> You can either use a different port or [disable
+> AirPlay](https://nono.ma/port-5000-used-by-control-center-in-macos) by
+> unchecking it in "System Preferences › Sharing" if you don't use it.
+
 ### Run the proxy
 
 Download and build the proxy:
