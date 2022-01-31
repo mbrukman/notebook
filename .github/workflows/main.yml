@@ -94,6 +94,18 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
 
+      - name: Cache node modules
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: "~/.npm"
+          key: os-${{ runner.os }}-node-${{ matrix.node }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            os-${{ runner.os }}-node-${{ matrix.node }}-yarn-
+            os-${{ runner.os }}-node-
+            os-${{ runner.os }}-
+
       - name: Install dependencies
         run: cd web/ui && yarn install
 
