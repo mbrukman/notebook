@@ -68,7 +68,11 @@ jobs:
         uses: actions/cache@v2
         with:
           path: "~/.cache/bazel"
-          key: bazel-${{ matrix.bazel }}-os-${{ matrix.os }}
+          key: os-${{ runner.os }}-bazel-${{ matrix.bazel }}-workspace-${{ hashFiles('**/WORKSPACE') }}
+          restore-keys: |
+            os-${{ runner.os }}-bazel-${{ matrix.bazel }}-workspace-
+            os-${{ runner.os }}-bazel-
+            os-${{ runner.os }}-
 
       - name: Verify Bazel installation
         run: bazel version
