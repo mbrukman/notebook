@@ -47,7 +47,7 @@ jobs:
     strategy:
       matrix:
         os: [ 'macos-10.15', 'ubuntu-20.04' ]
-        bazel: [ '4.1.0' ]
+        bazel: [ '4.2.2', '5.0.0' ]
         go: [ '1.17' ]
     name: Bazel ${{ matrix.bazel }} and Go ${{ matrix.go }} on ${{ matrix.os }}
     steps:
@@ -59,16 +59,16 @@ jobs:
         with:
           go-version: ${{ matrix.go }}
 
-      - name: Setup cache
-        uses: actions/cache@v2
-        with:
-          path: "~/.cache/bazel"
-          key: bazel
-
       - name: Setup Bazelisk
         uses: bazelbuild/setup-bazelisk@v1
         env:
           USE_BAZEL_VERSION: ${{ matrix.bazel }}
+
+      - name: Setup cache
+        uses: actions/cache@v2
+        with:
+          path: "~/.cache/bazel"
+          key: bazel-${{ matrix.bazel }}-os-${{ matrix.os }}
 
       - name: Verify Bazel installation
         run: bazel version
