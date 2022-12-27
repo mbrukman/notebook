@@ -10,7 +10,7 @@
     "dev": "preact watch"
   },
   "dependencies": {
-    "preact": "^10.6.6",
+    "preact": "^10.11.3",
     "preact-router": "^4.0.1"
   },
   "devDependencies": {
