@@ -116,12 +116,4 @@ jobs:
         run: cd web/ui && yarn install
 
       - name: Build web app
-        env:
-          # https://stackoverflow.com/q/69692842
-          # Addresses the error message:
-          #
-          #     Error message "error:0308010C:digital envelope routines::unsupported"
-          #
-          # that started happening when upgrading to Node v17 or later.
-          NODE_OPTIONS: "--openssl-legacy-provider"
         run: cd web/ui && yarn run build
