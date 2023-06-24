@@ -6,8 +6,8 @@
   "license": "Apache-2.0",
   "private": true,
   "scripts": {
-    "build": "preact build",
-    "dev": "preact watch"
+    "build": "NODE_OPTIONS=--openssl-legacy-provider preact build",
+    "dev": "NODE_OPTIONS=--openssl-legacy-provider preact watch"
   },
   "dependencies": {
     "preact": "^10.11.3",
