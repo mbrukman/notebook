@@ -131,7 +131,7 @@ func main() {
 	}
 
 	hostPort := fmt.Sprintf("%s:%d", *host, *port)
-	log.Printf("Listening on %s", hostPort)
+	log.Printf("Listening on http://%s", hostPort)
 
 	proxy := &Proxy{
 		Backends: backends,
