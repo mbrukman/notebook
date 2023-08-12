@@ -47,6 +47,6 @@ func main() {
 	http.HandleFunc("/", apiHandler.DispatchHandler)
 
 	hostPort := fmt.Sprintf("%s:%s", *host, *port)
-	log.Printf("Listening on %s", hostPort)
+	log.Printf("Listening on http://%s", hostPort)
 	log.Fatal(http.ListenAndServe(hostPort, nil))
 }
