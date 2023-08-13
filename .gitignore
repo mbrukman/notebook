@@ -3,6 +3,7 @@
 *~
 
 # Go binaries
+web/fileviewer/fileviewer
 web/proxy/proxy
 web/server/server
 

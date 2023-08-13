@@ -56,6 +56,13 @@ go_repository(
     version = "v2.4.0",
 )
 
+go_repository(
+    name = "com_github_gomarkdown_markdown",
+    importpath = "github.com/gomarkdown/markdown",
+    sum = "h1:7dT6mSWxX6R/7sB6FDSade73Q6BVL834Y1wJR/db+5o=",
+    version = "v0.0.0-20230714230225-84ecad09a30a",
+)
+
 go_rules_dependencies()
 
 go_register_toolchains(version = "host")
