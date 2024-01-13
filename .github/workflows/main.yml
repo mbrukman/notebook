@@ -58,12 +58,12 @@ jobs:
       - name: Setup Go
         uses: actions/setup-go@v2
         with:
-          go-version: ${{ matrix.go }}
+          go-version: '${{ matrix.go }}'
 
       - name: Setup Bazelisk
         uses: bazelbuild/setup-bazelisk@v1
         env:
-          USE_BAZEL_VERSION: ${{ matrix.bazel }}
+          USE_BAZEL_VERSION: '${{ matrix.bazel }}'
 
       - name: Setup cache
         uses: actions/cache@v2
@@ -77,12 +77,18 @@ jobs:
 
       - name: Verify Bazel installation
         run: bazel version
+        env:
+          USE_BAZEL_VERSION: '${{ matrix.bazel }}'
 
       - name: Build
         run: bazel build //...
+        env:
+          USE_BAZEL_VERSION: '${{ matrix.bazel }}'
 
       - name: Run tests
         run: bazel test //...
+        env:
+          USE_BAZEL_VERSION: '${{ matrix.bazel }}'
 
   ui:
     strategy:
