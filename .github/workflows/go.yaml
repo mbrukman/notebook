@@ -1,0 +1,64 @@
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+name: "Go"
+
+# GitHub Actions does not support anchors:
+# https://github.com/actions/runner/issues/1182
+# so we need to duplicate paths below and manually keep them in sync.
+on:
+  push:
+    branches: [ main ]
+    paths:
+        # Go configs
+      - go.mod
+      - go.sum
+        # Go source files
+      - '**/*.go'
+        # Relevant CI configs
+      - '.github/workflows/go.yaml' # this file
+
+  pull_request:
+    branches: [ main ]
+    paths:
+        # Go configs
+      - go.mod
+      - go.sum
+        # Go source files
+      - '**/*.go'
+        # Relevant CI configs
+      - '.github/workflows/go.yaml' # this file
+
+jobs:
+  go:
+    strategy:
+      matrix:
+        go: [ '1.17', '1.16', '1.15', '1.14', '1.13', '1.12' ]
+        os: [ 'ubuntu-22.04' ]
+    runs-on: ${{ matrix.os }}
+    name: Go ${{ matrix.go }} on ${{ matrix.os }}
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Setup Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: ${{ matrix.go }}
+
+      - name: Build
+        run: go build -v ./...
+
+      - name: Run tests
+        run: make test VERBOSE=1

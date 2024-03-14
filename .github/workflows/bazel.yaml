@@ -12,38 +12,42 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name: "Build & test"
+name: "Bazel"
 
+# GitHub Actions does not support anchors:
+# https://github.com/actions/runner/issues/1182
+# so we need to duplicate paths below and manually keep them in sync.
 on:
   push:
     branches: [ main ]
+    paths:
+        # Bazel configs
+      - WORKSPACE
+        # Bazel files
+      - '**/BUILD'
+      - '**/*.bazel'
+      - '**/*.bzl'
+        # Go source files
+      - '**/*.go'
+        # Relevant CI configs
+      - '.github/workflows/bazel.yaml' # this file
+
   pull_request:
     branches: [ main ]
+    paths:
+        # Bazel configs
+      - WORKSPACE
+        # Bazel files
+      - '**/BUILD'
+      - '**/*.bazel'
+      - '**/*.bzl'
+        # Go source files
+      - '**/*.go'
+        # Relevant CI configs
+      - '.github/workflows/bazel.yaml' # this file
 
 jobs:
-  server:
-    strategy:
-      matrix:
-        go: [ '1.17', '1.16', '1.15', '1.14', '1.13', '1.12' ]
-        os: [ 'ubuntu-22.04' ]
-    runs-on: ${{ matrix.os }}
-    name: Go ${{ matrix.go }} on ${{ matrix.os }}
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v2
-
-      - name: Setup Go
-        uses: actions/setup-go@v2
-        with:
-          go-version: ${{ matrix.go }}
-
-      - name: Build
-        run: go build -v ./...
-
-      - name: Run tests
-        run: make test VERBOSE=1
-
-  server-bazel:
+  bazel:
     strategy:
       matrix:
         bazel: [ '4.2.2', '5.0.0' ]
@@ -84,37 +88,3 @@ jobs:
 
       - name: Run tests
         run: bazel test //...
-
-  ui:
-    strategy:
-      matrix:
-        node: [ '20', '18' ]
-        os: [ 'ubuntu-22.04' ]
-    runs-on: ${{ matrix.os }}
-    name: Node ${{ matrix.node }} on ${{ matrix.os }}
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v2
-
-      - name: Setup Node
-        uses: actions/setup-node@v2
-        with:
-          node-version: ${{ matrix.node }}
-
-      - name: Cache node modules
-        uses: actions/cache@v2
-        env:
-          cache-name: cache-node-modules
-        with:
-          path: "~/.npm"
-          key: os-${{ runner.os }}-node-${{ matrix.node }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            os-${{ runner.os }}-node-${{ matrix.node }}-yarn-
-            os-${{ runner.os }}-node-
-            os-${{ runner.os }}-
-
-      - name: Install dependencies
-        run: cd web/ui && yarn install
-
-      - name: Build web app
-        run: cd web/ui && yarn run build
