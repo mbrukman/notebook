@@ -1,0 +1,70 @@
+# Copyright 2021 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+name: "Node"
+
+# GitHub Actions does not support anchors:
+# https://github.com/actions/runner/issues/1182
+# so we need to duplicate paths below and manually keep them in sync.
+on:
+  push:
+    branches: [ main ]
+    paths:
+        # Source files
+      - 'web/ui/**'
+        # Relevant CI configs
+      - '.github/workflows/node.yaml' # this file
+
+  pull_request:
+    branches: [ main ]
+    paths:
+        # Source files
+      - 'web/ui/**'
+        # Relevant CI configs
+      - '.github/workflows/node.yaml' # this file
+
+jobs:
+  ui:
+    strategy:
+      matrix:
+        node: [ '20', '18' ]
+        os: [ 'ubuntu-22.04' ]
+    runs-on: ${{ matrix.os }}
+    name: Node ${{ matrix.node }} on ${{ matrix.os }}
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: Cache node modules
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: "~/.npm"
+          key: os-${{ runner.os }}-node-${{ matrix.node }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            os-${{ runner.os }}-node-${{ matrix.node }}-yarn-
+            os-${{ runner.os }}-node-
+            os-${{ runner.os }}-
+
+      - name: Install dependencies
+        run: cd web/ui && yarn install
+
+      - name: Build web app
+        run: cd web/ui && yarn run build

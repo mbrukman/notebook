@@ -1,11 +1,17 @@
 # Notebook
 
-[![Build Status][github-ci-badge]][github-ci-url]
+[![Bazel][bazel-ci-badge]][bazel-ci-url]
+[![Node][node-ci-badge]][node-ci-url]
+[![Go][go-ci-badge]][go-ci-url]
 [![Go docs][go-doc-badge]][go-doc-url]
 [![Go Report Card][go-report-card-badge]][go-report-card-url]
 
-[github-ci-badge]: https://github.com/mbrukman/notebook/actions/workflows/main.yml/badge.svg
-[github-ci-url]: https://github.com/mbrukman/notebook/actions/workflows/main.yml
+[bazel-ci-badge]: https://github.com/mbrukman/notebook/actions/workflows/bazel.yaml/badge.svg
+[bazel-ci-url]: https://github.com/mbrukman/notebook/actions/workflows/bazel.yaml
+[node-ci-badge]: https://github.com/mbrukman/notebook/actions/workflows/node.yaml/badge.svg
+[node-ci-url]: https://github.com/mbrukman/notebook/actions/workflows/node.yaml
+[go-ci-badge]: https://github.com/mbrukman/notebook/actions/workflows/go.yaml/badge.svg
+[go-ci-url]: https://github.com/mbrukman/notebook/actions/workflows/go.yaml
 [go-doc-badge]: http://img.shields.io/badge/godoc-reference-informational.svg
 [go-doc-url]: https://pkg.go.dev/github.com/mbrukman/notebook
 [go-report-card-badge]: https://goreportcard.com/badge/github.com/mbrukman/notebook
