@@ -6,13 +6,13 @@
 [![Go docs][go-doc-badge]][go-doc-url]
 [![Go Report Card][go-report-card-badge]][go-report-card-url]
 
-[bazel-ci-badge]: https://github.com/mbrukman/notebook/actions/workflows/bazel.yaml/badge.svg
-[bazel-ci-url]: https://github.com/mbrukman/notebook/actions/workflows/bazel.yaml
-[node-ci-badge]: https://github.com/mbrukman/notebook/actions/workflows/node.yaml/badge.svg
-[node-ci-url]: https://github.com/mbrukman/notebook/actions/workflows/node.yaml
-[go-ci-badge]: https://github.com/mbrukman/notebook/actions/workflows/go.yaml/badge.svg
-[go-ci-url]: https://github.com/mbrukman/notebook/actions/workflows/go.yaml
-[go-doc-badge]: http://img.shields.io/badge/godoc-reference-informational.svg
+[bazel-ci-badge]: https://github.com/mbrukman/notebook/actions/workflows/bazel.yaml/badge.svg?query=branch%3Amain
+[bazel-ci-url]: https://github.com/mbrukman/notebook/actions/workflows/bazel.yaml?query=branch%3Amain
+[node-ci-badge]: https://github.com/mbrukman/notebook/actions/workflows/node.yaml/badge.svg?query=branch%3Amain
+[node-ci-url]: https://github.com/mbrukman/notebook/actions/workflows/node.yaml?query=branch%3Amain
+[go-ci-badge]: https://github.com/mbrukman/notebook/actions/workflows/go.yaml/badge.svg?query=branch%3Amain
+[go-ci-url]: https://github.com/mbrukman/notebook/actions/workflows/go.yaml?query=branch%3Amain
+[go-doc-badge]: http://img.shields.io/badge/godoc-reference-informational.svg?query=branch%3Amain
 [go-doc-url]: https://pkg.go.dev/github.com/mbrukman/notebook
 [go-report-card-badge]: https://goreportcard.com/badge/github.com/mbrukman/notebook
 [go-report-card-url]: https://goreportcard.com/report/github.com/mbrukman/notebook
