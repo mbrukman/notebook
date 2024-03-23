@@ -72,7 +72,7 @@ jobs:
         uses: bazelbuild/setup-bazelisk@v2
 
       - name: Setup cache
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: "~/.cache/bazel"
           key: os-${{ runner.os }}-bazel-${{ matrix.bazel }}-workspace-${{ hashFiles('**/WORKSPACE') }}
