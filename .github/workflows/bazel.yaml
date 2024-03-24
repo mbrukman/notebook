@@ -68,18 +68,14 @@ jobs:
         with:
           go-version: '${{ matrix.go }}'
 
-      - name: Setup Bazelisk
-        uses: bazelbuild/setup-bazelisk@v2
-
-      - name: Setup cache
-        uses: actions/cache@v4
+      - uses: bazel-contrib/setup-bazel@0.8.1
         with:
-          path: "~/.cache/bazel"
-          key: os-${{ runner.os }}-bazel-${{ matrix.bazel }}-workspace-${{ hashFiles('**/WORKSPACE') }}
-          restore-keys: |
-            os-${{ runner.os }}-bazel-${{ matrix.bazel }}-workspace-
-            os-${{ runner.os }}-bazel-
-            os-${{ runner.os }}-
+          # Avoid downloading Bazel every time.
+          bazelisk-cache: true
+          # Store build cache per workflow.
+          disk-cache: ${{ github.workflow }}
+          # Share repository cache between workflows.
+          repository-cache: true
 
       - name: Verify Bazel installation
         run: bazel version
