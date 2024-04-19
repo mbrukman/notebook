@@ -51,7 +51,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        bazel: [ '6.0.0', '5.0.0' ]
+        bazel: [ '6.0.0' ]
         go: [ '1.17' ]
         os: [ 'macos-11', 'ubuntu-22.04' ]
     runs-on: ${{ matrix.os }}
