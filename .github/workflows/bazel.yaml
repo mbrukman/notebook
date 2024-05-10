@@ -46,6 +46,17 @@ on:
         # Relevant CI configs
       - '.github/workflows/bazel.yaml' # this file
 
+  schedule:
+      # https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#schedule
+      #
+      #      ┌───────────── minute (0 - 59)
+      #      │ ┌───────────── hour (0 - 23)
+      #      │ │ ┌───────────── day of the month (1 - 31)
+      #      │ │ │ ┌───────────── month (1 - 12 or JAN-DEC)
+      #      │ │ │ │ ┌───────────── day of the week (0 - 6 or SUN-SAT)
+      #      │ │ │ │ │
+    - cron: '1 2 3 * *'  # run at 2:01 every month on the 3rd day
+
 jobs:
   bazel:
     strategy:
@@ -53,7 +64,7 @@ jobs:
       matrix:
         bazel: [ '6.0.0' ]
         go: [ '1.17' ]
-        os: [ 'macos-11', 'ubuntu-22.04' ]
+        os: [ 'macos-12', 'ubuntu-22.04' ]
     runs-on: ${{ matrix.os }}
     name: Bazel ${{ matrix.bazel }} and Go ${{ matrix.go }} on ${{ matrix.os }}
     env:
