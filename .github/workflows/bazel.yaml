@@ -64,7 +64,7 @@ jobs:
       matrix:
         bazel: [ '6.0.0' ]
         go: [ '1.17' ]
-        os: [ 'macos-13', 'ubuntu-22.04' ]
+        os: [ 'macos-13', 'ubuntu-24.04', 'ubuntu-22.04' ]
     runs-on: ${{ matrix.os }}
     name: Bazel ${{ matrix.bazel }} and Go ${{ matrix.go }} on ${{ matrix.os }}
     env:
